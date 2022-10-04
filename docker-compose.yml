@@ -1,0 +1,39 @@
+version: "3"
+services:
+  proxy:
+    image: envoyproxy/envoy:v1.23.1
+    depends_on:
+      - auth-service
+      - sample-service
+    restart: always
+    container_name: "proxy"
+    hostname: "proxy"
+    ports:
+      - "8080:8080"
+      - "8888:8888"
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml:ro
+    networks:
+      - test
+  auth-service:
+    build: ./auth-service
+    restart: always
+    container_name: "auth-service"
+    hostname: "auth-service"
+    ports:
+      - "48081:8080"
+    networks:
+      - test
+  sample-service:
+    build: ./sample-service
+    restart: always
+    container_name: "sample-service"
+    hostname: "sample-service"
+    ports:
+      - "48082:8080"
+    networks:
+      - test
+
+networks:
+  test:
+    driver: bridge
