@@ -41,7 +41,7 @@ static_resources:
                           uri: http://auth-service:8080/authenticate
                           cluster: auth-service
                           timeout: 5s
-                        path_prefix: /authenticate
+                        path_prefix: /authenticate?path=
                         authorization_response:
                           allowed_upstream_headers:
                             patterns:

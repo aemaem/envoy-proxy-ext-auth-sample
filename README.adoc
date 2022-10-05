@@ -2,20 +2,19 @@
 
 1. `docker compose build`
 2. `docker compose up`
-3. `curl -i -L localhost:8080/` -> OK `{"title":"The index page"}`
-4. `curl -i -L localhost:8080/lenny` -> NOT_FOUND `{"detail":"Not Found"}`
-
-As can be seen in the logs below, the configured authentication is called with the same path as the request is.
+3. `curl -i -L -u "admin:admin" localhost:8080/` -> OK `{"title":"The index page"}`
+4. `curl -i -L -u "admin:admin" localhost:8080/lenny` -> OK `{"title":"The index page"}`
 
 == Logs
 
 .auth-service
 ====
-INFO:     172.23.0.4:50136 - "GET / HTTP/1.1" 200 OK +
-INFO:     172.23.0.4:54662 - "GET /lenny HTTP/1.1" 404 Not Found +
+INFO:     172.23.0.4:50136 - "GET /authenticate?path=/ HTTP/1.1" 200 OK +
+INFO:     172.23.0.4:54662 - "GET /authenticate?path=/lenny HTTP/1.1" 404 Not Found +
 ====
 
 .sample-service
 ====
 INFO:     172.23.0.4:38562 - "GET / HTTP/1.1" 200 OK +
+INFO:     172.23.0.4:38562 - "GET /lenny HTTP/1.1" 200 OK +
 ====
